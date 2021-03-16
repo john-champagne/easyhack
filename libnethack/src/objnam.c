@@ -2525,14 +2525,10 @@ typfnd:
         ;
     else if (oclass == ARMOR_CLASS || oclass == WEAPON_CLASS || is_weptool(otmp)
              || (oclass == RING_CLASS && objects[typ].oc_charged)) {
-        if (spe > 1 + rn2_on_rng(5, rng_wish_quality))
-            spe = 0;
-        if (spe > 2 && Luck < 0)
-            spesgn = -1;
+        spe = (spe > 5) ? 5 : spe;
     } else {
         if (oclass == WAND_CLASS) {
-            if (spe > 1 && spesgn == -1)
-                spe = 1;
+           spe = (spe > 15) ? 15 : spe; 
         } else {
             if (spe > 0 && spesgn == -1)
                 spe = 0;
@@ -2670,7 +2666,7 @@ typfnd:
 
         /* set erodeproof */
         if (erodeproof && !eroded && !eroded2)
-            otmp->oerodeproof = (Luck >= 0 || wizard);
+            otmp->oerodeproof = (1 || wizard);
     }
 
     /* set otmp->recharged */
@@ -2684,7 +2680,7 @@ typfnd:
     /* set poisoned */
     if (ispoisoned) {
         if (is_poisonable(otmp))
-            otmp->opoisoned = (Luck >= 0);
+            otmp->opoisoned = (1);
         else if (Is_box(otmp) || typ == TIN)
             otmp->otrapped = 1;
         else if (oclass == FOOD_CLASS)
