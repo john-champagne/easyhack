@@ -2649,10 +2649,10 @@ typfnd:
         curse(otmp);
     } else if (uncursed) {
         otmp->blessed = 0;
-        otmp->cursed = (Luck < 0 && !wizard);
+        otmp->cursed = (0 && !wizard);
     } else if (blessed) {
-        otmp->blessed = (Luck >= 0 || wizard);
-        otmp->cursed = (Luck < 0 && !wizard);
+        otmp->blessed = (1 || wizard);
+        otmp->cursed = (0 && !wizard);
     } else if (spesgn < 0) {
         curse(otmp);
     }
