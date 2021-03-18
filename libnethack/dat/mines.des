@@ -593,8 +593,6 @@ MONSTER:'G',"gnome",random
 MONSTER:'G',"gnome",random
 MONSTER:'G',"gnome",random
 MONSTER:'G',"gnome lord",random
-MONSTER:'Y',"monkey",random
-MONSTER:'Y',"monkey",random
 
 SUBROOM: "ordinary", random, (2,2), (4,2), "town"
 DOOR: false, closed, south, random
@@ -607,9 +605,6 @@ DOOR: false, closed, south, random
 
 SUBROOM: "ordinary", lit, (10,2), (3,4), "town"
 MONSTER:'G',"gnome",random
-MONSTER:'Y',"monkey",random
-MONSTER:'Y',"monkey",random
-MONSTER:'Y',"monkey",random
 DOOR: false, closed, south, random
 
 SUBROOM: "ordinary", random, (14,2), (4,2), "town"
