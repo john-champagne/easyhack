@@ -995,7 +995,9 @@ spelleffects(int spell, boolean atme, const struct nh_cmd_arg *arg)
     } else if (spellknow(spell) <= 1000) {      /* 5% */
         pline(msgc_hint, "Your knowledge of this spell is growing faint.");
     }
-    energy = (spellev(spell) * 5);      /* 5 <= energy <= 35 */
+    const double PW_LOSS_FACTOR = 0.5;
+
+    energy = (int)(round((spellev(spell) * 5) * PW_LOSS_FACTOR));      /* 5 <= energy <= 35 */
 
     if (u.uhunger <= 10 && spellid(spell) != SPE_DETECT_FOOD) {
         pline(msgc_cancelled, "You are too hungry to cast that spell.");

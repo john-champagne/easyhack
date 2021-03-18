@@ -3100,9 +3100,18 @@ maybe_wail(void)
     }
 }
 
+const double HP_LOSS_FACTOR = 0.5;
+
 void
 losehp(int n, const char *killer)
 {
+    // Calculate new damage using HP_LOSS_FACTOR 
+    if (n > 0) {
+	    n = (int)(round((double)n * HP_LOSS_FACTOR));
+	    if (n == 0)
+		    n = 1;
+    }
+
     if (Upolyd) {
         u.mh -= n;
         if (u.mhmax < u.mh)
