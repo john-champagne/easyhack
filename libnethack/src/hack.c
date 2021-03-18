@@ -1570,7 +1570,8 @@ domove(const struct nh_cmd_arg *arg, enum u_interaction_mode uim,
         return 0;
     }
 
-    u_wipe_engr(rnd(5));
+    if (!rn2(3))
+    	u_wipe_engr(1);
     if (((wtcap = near_capacity()) >= OVERLOADED ||
          (wtcap > SLT_ENCUMBER && (Upolyd ? (u.mh < 5 && u.mh != u.mhmax)
                                    : (u.uhp < 10 && u.uhp != u.uhpmax))))

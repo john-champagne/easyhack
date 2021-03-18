@@ -1075,9 +1075,9 @@ doengrave_core(const struct nh_cmd_arg *arg, int auto_elbereth)
     for (sp = ebuf_copy; *sp; sp++) {
         if (isspace(*sp))
             continue;
-        if (((type == DUST || type == ENGR_BLOOD) && !rn2(25)) ||
-            (Blind && !rn2(11)) || (Confusion && !rn2(7)) ||
-            (Stunned && !rn2(4)) || (Hallucination && !rn2(2)))
+        if (((type == DUST || type == ENGR_BLOOD) && !rn2(50)) ||
+            (Blind && !rn2(22)) || (Confusion && !rn2(14)) ||
+            (Stunned && !rn2(8)) || (Hallucination && !rn2(4)))
             *sp = ' ' + rnd(96 - 2);    /* ASCII '!' thru '~' (excludes ' ' and 
                                            DEL) */
     }

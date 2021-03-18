@@ -170,7 +170,8 @@ attack(struct monst *mtmp, schar dx, schar dy, boolean confirmed)
     }
     exercise(A_STR, TRUE);      /* you're exercising muscles */
     /* andrew@orca: prevent unlimited pick-axe attacks */
-    u_wipe_engr(3);
+    if (!rn2(4)) 
+    	u_wipe_engr(1);
 
     /* Is the "it died" check actually correct? */
     if (mdat->mlet == S_LEPRECHAUN &&

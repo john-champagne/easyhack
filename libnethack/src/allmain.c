@@ -958,8 +958,6 @@ you_moved(void)
             invault();
             if (Uhave_amulet)
                 amulet();
-            if (!rn2(40 + (int)(ACURR(A_DEX) * 3)))
-                u_wipe_engr(rnd(3));
             if (u.uevent.udemigod && !u.uinvulnerable) {
                 if (u.udg_cnt)
                     u.udg_cnt--;
