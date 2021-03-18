@@ -16,3 +16,4 @@ tags
 TAGS
 libnethack/util/savemap.txt
 *.d
+*.o
