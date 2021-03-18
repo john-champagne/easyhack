@@ -494,7 +494,7 @@ const struct objclass const_objects[] = {
 #define RING(name,power,stone,cost,mgc,spec,mohs,metal,color) OBJECT( \
            OBJ(name,stone), \
            BITS(0,0,spec,0,mgc,spec,0,0,0,HARDGEM(mohs),0,P_NONE,metal), \
-           power, RING_CLASS, 0, 0, 3, cost, 0, 0, 0, 0, 15, color )
+           power, RING_CLASS, 0, 0, 1, cost, 0, 0, 0, 0, 15, color )
     RING("adornment", ADORNED, "wooden", 100, 1, 1, 2, WOOD, HI_WOOD),
     RING("gain strength", 0, "granite", 150, 1, 1, 7, MINERAL, HI_MINERAL),
     RING("gain constitution", 0, "opal", 150, 1, 1, 7, MINERAL, HI_MINERAL),
@@ -541,7 +541,7 @@ const struct objclass const_objects[] = {
 /* amulets ... - THE Amulet comes last because it is special */
 #define AMULET(name,desc,power,prob) OBJECT( \
            OBJ(name,desc), BITS(0,0,0,0,1,0,0,0,0,0,0,P_NONE,IRON), power, \
-           AMULET_CLASS, prob, 0, 20, 150, 0, 0, 0, 0, 20, HI_METAL )
+           AMULET_CLASS, prob, 0, 2, 150, 0, 0, 0, 0, 20, HI_METAL )
 
     AMULET("amulet of ESP", "circular", TELEPAT, 175),
     AMULET("amulet of life saving", "spherical", LIFESAVED, 75),
@@ -724,7 +724,7 @@ const struct objclass const_objects[] = {
 /* potions ... */
 #define POTION(name,desc,mgc,power,prob,cost,color) OBJECT( \
         OBJ(name,desc), BITS(0,1,0,0,mgc,0,0,0,0,0,0,P_NONE,GLASS), power, \
-            POTION_CLASS, prob, 0, 20, cost, 0, 0, 0, 0, 10, color )
+            POTION_CLASS, prob, 0, 5, cost, 0, 0, 0, 0, 10, color )
     POTION("gain ability", "ruby", 1, 0, 42, 300, CLR_RED),
     POTION("restore ability", "pink", 1, 0, 40, 100, CLR_BRIGHT_MAGENTA),
     POTION("confusion", "orange", 1, CONFUSION, 42, 100, CLR_ORANGE),
@@ -757,7 +757,7 @@ const struct objclass const_objects[] = {
 /* scrolls ... */
 #define SCROLL(name,text,mgc,prob,cost) OBJECT( \
         OBJ(name,text), BITS(0,1,0,0,mgc,0,0,0,0,0,0,P_NONE,PAPER), 0, \
-            SCROLL_CLASS, prob, 0, 5, cost, 0, 0, 0, 0, 6, HI_PAPER )
+            SCROLL_CLASS, prob, 0, 1, cost, 0, 0, 0, 0, 6, HI_PAPER )
     SCROLL("enchant armor", "ZELGO MER", 1, 63, 80),
     SCROLL("destroy armor", "JUYED AWK YACC", 1, 45, 100),
     SCROLL("confuse monster", "NR 9", 1, 53, 100),
@@ -814,7 +814,7 @@ const struct objclass const_objects[] = {
 #define SPELL(name,desc,sub,prob,delay,level,mgc,dir,color,deflet)      \
     OBJECT( OBJ(name,desc), BITS(0,0,0,0,mgc,0,0,0,0,0,dir,sub,PAPER), 0, \
             SPBOOK_CLASS, prob, delay,                                  \
-            50, level*100, 0, 0, deflet, level, 20, color )
+            5, level*100, 0, 0, deflet, level, 20, color )
     SPELL("dig", "parchment", P_MATTER_SPELL, 20, 6, 5, 1,
           RAY, HI_PAPER, 'd'),
     SPELL("magic missile", "vellum", P_ATTACK_SPELL, 45, 2, 2, 1,
@@ -906,7 +906,7 @@ const struct objclass const_objects[] = {
 /* wands ... */
 #define WAND(name,typ,prob,cost,mgc,dir,metal,color) OBJECT( \
         OBJ(name,typ), BITS(0,0,1,0,mgc,1,0,0,0,0,dir,P_NONE,metal), 0, \
-            WAND_CLASS, prob, 0, 7, cost, 0, 0, 0, 0, 30, color )
+            WAND_CLASS, prob, 0, 5, cost, 0, 0, 0, 0, 30, color )
     WAND("light", "glass", 95, 100, 1, NODIR, GLASS, HI_GLASS),
     WAND("secret door detection", "balsa",
          50, 150, 1, NODIR, WOOD, HI_WOOD),
@@ -951,7 +951,7 @@ const struct objclass const_objects[] = {
 #define GEM(name,desc,prob,wt,gval,nutr,mohs,glass,color) OBJECT( \
         OBJ(name,desc), \
             BITS(0,1,0,0,0,0,0,0,0,HARDGEM(mohs),0,-P_SLING,glass), 0, \
-            GEM_CLASS, prob, 0, 1, gval, 3, 3, 0, 0, nutr, color )
+            GEM_CLASS, prob, 0, 0, gval, 3, 3, 0, 0, nutr, color )
 #define ROCK(name,desc,kn,prob,wt,gval,sdam,ldam,mgc,nutr,mohs,glass,color) \
         OBJECT( OBJ(name,desc), \
             BITS(kn,1,0,0,mgc,0,0,0,0,HARDGEM(mohs),0,-P_SLING,glass), 0, \
