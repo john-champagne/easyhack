@@ -741,7 +741,7 @@ skip0:
             mkfount(lev, 0, croom);
         if (!mrn2(60))
             mksink(lev, croom);
-        if (!mrn2(60))
+        if (!mrn2(15))
             mkaltar(lev, croom);
         x = 80 - (depth(&lev->z) * 2);
         if (x < 2)
@@ -1371,7 +1371,10 @@ mkaltar(struct level *lev, struct mkroom *croom)
     lev->locations[m.x][m.y].typ = ALTAR;
 
     /* -1 - A_CHAOTIC, 0 - A_NEUTRAL, 1 - A_LAWFUL */
-    al = mrn2((int)A_LAWFUL + 2) - 1;
+    if (!mrn2(3)) 
+        al = mrn2((int)A_LAWFUL + 2) - 1;
+    else
+	al = u.ualign.type;
     lev->locations[m.x][m.y].altarmask = Align2amask(al);
 }
 
