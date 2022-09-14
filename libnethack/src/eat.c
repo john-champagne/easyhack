@@ -2048,7 +2048,8 @@ gethungry(void)
     if ((!u_helpless(hm_asleep) || !rn2(10)) /* slow metabolism while asleep */
         &&(carnivorous(youmonst.data) || herbivorous(youmonst.data))
         && !Slow_digestion)
-        u.uhunger--;    /* ordinary food consumption */
+        if (moves % 3 == 0)
+		u.uhunger--;    /* ordinary food consumption */
 
     /* Polyinit into an inediate form gives you "ring hunger" levels of hunger, to
        ensure that some food clock always exists (either from natural hunger loss,

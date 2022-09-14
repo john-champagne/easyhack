@@ -1586,7 +1586,7 @@ dosacrifice(const struct nh_cmd_arg *arg)
             /* The player can gain an artifact */
             /* The chance goes down as the number of artifacts goes up */
             if (u.ulevel > 2 && u.uluck >= 0) {
-                if (!rn2_on_rng(10 + (2 * u.ugifts * nartifacts),
+                if (!rn2_on_rng(5 + (u.ugifts * nartifacts),
                                 rng_altar_gift)) {
                     otmp = mk_artifact(level, NULL, a_align(u.ux, u.uy),
                                        rng_altar_gift);
