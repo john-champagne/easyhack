@@ -1523,7 +1523,7 @@ dosacrifice(const struct nh_cmd_arg *arg)
         /* OK, you get brownie points. */
         if (u.ugangr) {
             u.ugangr -=
-                ((value * (u.ualign.type == A_CHAOTIC ? 2 : 3)) / MAXVALUE);
+                ((value * 3) / MAXVALUE);
             if (u.ugangr < 0)
                 u.ugangr = 0;
             if (u.ugangr != saved_anger) {
@@ -1555,8 +1555,7 @@ dosacrifice(const struct nh_cmd_arg *arg)
             adjalign(value);
             pline(msgc_aligngood, "You feel partially absolved.");
         } else if (u.ublesscnt > 0) {
-            u.ublesscnt -=
-                ((value * (u.ualign.type == A_CHAOTIC ? 500 : 300)) / MAXVALUE);
+            u.ublesscnt -= ((value * 500) / MAXVALUE);
             if (u.ublesscnt < 0)
                 u.ublesscnt = 0;
             if (u.ublesscnt != saved_cnt) {
@@ -1585,38 +1584,39 @@ dosacrifice(const struct nh_cmd_arg *arg)
             /* you were already in pretty good standing */
             /* The player can gain an artifact */
             /* The chance goes down as the number of artifacts goes up */
-            if (u.ulevel > 2 && u.uluck >= 0) {
-                if (!rn2_on_rng(5 + (u.ugifts * nartifacts),
-                                rng_altar_gift)) {
-                    otmp = mk_artifact(level, NULL, a_align(u.ux, u.uy),
-                                       rng_altar_gift);
-                    if (otmp) {
-                        if (otmp->spe < 0)
-                            otmp->spe = 0;
-                        if (otmp->cursed)
-                            uncurse(otmp);
-                        otmp->oerodeproof = TRUE;
-                        dropy(otmp);
-                        at_your_feet("An object");
-                        godvoice(msgc_aligngood, u.ualign.type,
-                                 "Use my gift wisely!");
-                        historic_event(FALSE, "received %s from %s.",
-                                       artiname(otmp->oartifact), u_gname());
-                        u.ugifts++;
-                        u.ublesscnt = rnz(300 + (50 * nartifacts));
-                        exercise(A_WIS, TRUE);
-                        /* make sure we can use this weapon */
-                        unrestrict_weapon_skill(weapon_type(otmp));
-                        discover_artifact(otmp->oartifact);
-                        return 1;
-                    }
+            if (!rn2_on_rng(5 + (u.ugifts * nartifacts), rng_altar_gift)) {
+                otmp = mk_artifact(level, NULL, a_align(u.ux, u.uy), rng_altar_gift);
+                if (otmp) {
+                    if (otmp->spe < 0)
+                        otmp->spe = 0;
+                    if (otmp->cursed)
+                        uncurse(otmp);
+                    otmp->oerodeproof = TRUE;
+                    dropy(otmp);
+                    at_your_feet("An object");
+                    godvoice(msgc_aligngood, u.ualign.type,
+                                "Use my gift wisely!");
+                    historic_event(FALSE, "received %s from %s.",
+                                    artiname(otmp->oartifact), u_gname());
+                    u.ugifts++;
+                    exercise(A_WIS, TRUE);
+                    /* make sure we can use this weapon */
+                    unrestrict_weapon_skill(weapon_type(otmp));
+                    discover_artifact(otmp->oartifact);
+                    return 1;
                 } else {
-                    /* we used a seed from rng_altar_gift but didn't get an
-                       artifact; burn a seed to match the one that would be
-                       consumed in mk_artifact (relevant if nartifacts is
-                       different between games) */
-                    rn2_on_rng(27720, rng_altar_gift);
+                    godvoice(msgc_aligngood, u.ualign.type, "You may have a wish!");
+                    makewish();
+                    u.ugifts++;
+                    exercise(A_WIS, TRUE);
+                    return 1;
                 }
+            } else {
+                /* we used a seed from rng_altar_gift but didn't get an
+                    artifact; burn a seed to match the one that would be
+                    consumed in mk_artifact (relevant if nartifacts is
+                    different between games) */
+                rn2_on_rng(27720, rng_altar_gift);
             }
             change_luck((value * LUCKMAX) / (MAXVALUE * 2));
             if ((int)u.uluck < 0)

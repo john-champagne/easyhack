@@ -2512,11 +2512,11 @@ typfnd:
         obj_extract_self(otmp); /* now release it for caller's use */
     }
 
+    // Quantity modifier
     if (cnt > 0 && objects[typ].oc_merge && oclass != SPBOOK_CLASS &&
-        (wizard || (cnt <= 7 && Is_candle(otmp)) ||
+        (wizard ||
          (cnt <= 20 && ((oclass == WEAPON_CLASS && is_ammo(otmp))
-                        || typ == ROCK || is_missile(otmp))) ||
-         cnt <= rn2_on_rng(6, rng_wish_quantity)))
+                        || typ == ROCK || is_missile(otmp))) || cnt <= 6))
         otmp->quan = (long)cnt;
 
     if (spesgn == 0)
