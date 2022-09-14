@@ -83,7 +83,7 @@ is_edible_now(const struct obj *obj)
 void
 init_uhunger(void)
 {
-    u.uhunger = 900;
+    u.uhunger = 2000;
     u.uhs = NOT_HUNGRY;
 }
 
@@ -1961,7 +1961,7 @@ doeat(const struct nh_cmd_arg *arg)
                 return 0;
         }
 
-        if (u.uhunger >= 2000) {
+        if (u.uhunger >= 600000) {
             choke(u.utracked[tos_food]);
             return 0;
         }
@@ -2077,16 +2077,10 @@ gethungry(void)
            leaving the character on ring hunger only) */
         switch ((int)(moves % 20)) {    /* note: use even cases only */
         case 4:
-            if (uleft && (uleft->spe || !objects[uleft->otyp].oc_charged))
-                u.uhunger--;
             break;
         case 8:
-            if (uamul)
-                u.uhunger--;
             break;
         case 12:
-            if (uright && (uright->spe || !objects[uright->otyp].oc_charged))
-                u.uhunger--;
             break;
         case 16:
             if (Uhave_amulet)
@@ -2116,7 +2110,7 @@ lesshungry(int num, struct obj *otmp)
     /* Have lesshungry() report when you're nearly full so all eating warns
        when you're about to choke. Exception: fruit juice. This now uses
        a new interface (stop automatically, continue with control-A). */
-    if (u.uhunger >= 1500 && u.uhunger - num < 1500) {
+    if (u.uhunger >= 400000 && u.uhunger - num < 400000) {
         pline(msgc_fatal, "You're having a hard time getting all of it down.");
         /* Hack: the interruption can mean that you drop just back under
            1500 for next turn and get warned again. Using a range would mean
@@ -2142,7 +2136,7 @@ newuhs(boolean incr)
     unsigned newhs;
     int h = u.uhunger;
 
-    newhs = (h > 1000) ? SATIATED :
+    newhs = (h > 350000) ? SATIATED :
         (h > 150) ? NOT_HUNGRY :
         (h > 50) ? HUNGRY :
         (h > 0) ? WEAK : FAINTING;
