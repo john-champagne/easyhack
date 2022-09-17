@@ -1547,7 +1547,7 @@ mbag_explodes(struct obj *obj, int depthin)
        action to be worth it. */
     if ((Is_mbag(obj) || obj->otyp == WAN_CANCELLATION) &&
         (rn2(1 << (depthin > 7 ? 7 : depthin)) <= depthin))
-        return 1;
+        return 0;
     else if (Has_contents(obj)) {
         struct obj *otmp;
 
