@@ -5,9 +5,11 @@
 
 /* various code that was replicated in *main.c */
 
+#include "script.h"
 #include "hack.h"
 #include "hungerstatus.h"
 #include "common_options.h"
+
 
 #include <sys/stat.h>
 #include <limits.h>
@@ -40,6 +42,17 @@ nh_lib_init(const struct nh_window_procs *procs, const char *const *paths)
     int i;
 
     DEBUG_LOG("Initializing NetHack engine...\n");
+    
+    if (start_Lua() != LUA_OK) {
+        printf("Error starting lua. Exiting...\n");
+        printf("%s\n", lua_tostring(Lua, -1));
+        exit(0);
+    }
+    /*int b;
+    for (int i = 0; i < 5; i++) {
+        script_call("room.number_of_items",0,0,0,&b);
+        printf("b = %d\n", b);
+    }*/
 
     API_ENTRY_CHECKPOINT_RETURN_VOID_ON_ERROR();
     windowprocs = *procs;

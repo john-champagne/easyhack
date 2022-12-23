@@ -3,7 +3,7 @@ DESTDIR =
 BINDIR = $(HOME)/nethack4dir
 DATADIR = $(BINDIR)/data
 STATEDIR = $(BINDIR)/save
-
+SCRIPTDIR = $(BINDIR)/ruleset
 FLEX = flex
 BISON = bison
 
@@ -17,19 +17,20 @@ all: nethack/src/main libnethack/dat/license libnethack/dat/nhdat tilesets/dat/t
 
 .PHONY: install
 install: all
-	mkdir -p $(DESTDIR)$(BINDIR) $(DESTDIR)$(DATADIR) $(DESTDIR)$(STATEDIR)
+	mkdir -p $(DESTDIR)$(BINDIR) $(DESTDIR)$(DATADIR) $(DESTDIR)$(STATEDIR) $(DESTDIR)$(SCRIPTDIR)
 	install nethack/src/main $(DESTDIR)$(BINDIR)/$(GAME)
 	install -m 644 libnethack/dat/license $(DESTDIR)$(DATADIR)/license
 	install -m 644 libnethack/dat/nhdat $(DESTDIR)$(DATADIR)/nhdat
 	install -m 644 tilesets/dat/textascii.nh4ct $(DESTDIR)$(DATADIR)/textascii.nh4ct
 	install -m 644 tilesets/dat/textunicode.nh4ct $(DESTDIR)$(DATADIR)/textunicode.nh4ct
 
-CFLAGS = -g -O2
-CXXFLAGS = -g -O2
+CFLAGS = -g -O0
+CXXFLAGS = -g -O0
 
 CFLAGS += --std=c11 -DAIMAKE_NORETURN=_Noreturn
+CXXFLAGS += -DAIMAKE_NORETURN=_Noreturn
 
-EXTRAS = -pthread -ldl
+EXTRAS = -pthread -ldl -llua5.3
 ifeq ($(shell uname), Linux)
 	CPPFLAGS += -DAIMAKE_BUILDOS_linux
 	CPPFLAGS += -D_XOPEN_SOURCE=700
@@ -49,6 +50,7 @@ CPPFLAGS += -Ilibnethack_common/include
 CPPFLAGS += -Inethack/include
 CPPFLAGS += -Itilesets/include
 CPPFLAGS += -Ilibuncursed/include
+CPPFLAGS += -I/usr/include/lua5.3
 
 
 ### BINARIES ###
@@ -56,7 +58,7 @@ CPPFLAGS += -Ilibuncursed/include
 # nethack: everything but netgame and netplay
 GAME_O = $(addprefix nethack/src/,brandings.o color.o dialog.o extrawin.o gameover.o getline.o keymap.o mail.o main.o map.o menu.o messages.o motd.o options.o outchars.o playerselect.o replay.o rungame.o sidebar.o status.o topten.o windows.o)
 # libnethack: everything plus readonly
-GAME_O += $(addprefix libnethack/src/,allmain.o apply.o artifact.o attrib.o ball.o bones.o botl.o cmd.o dbridge.o decl.o detect.o dig.o display.o dlb.o do.o do_name.o do_wear.o dog.o dogmove.o dokick.o dothrow.o drawing.o dump.o dungeon.o eat.o end.o engrave.o exper.o explode.o extralev.o files.o fountain.o hack.o history.o invent.o level.o light.o localtime.o lock.o log.o mail.o makemon.o mcastu.o memfile.o messages.o mhitm.o mhitq.o mhitu.o minion.o mklev.o mkmap.o mkmaze.o mkobj.o mkroom.o mon.o mondata.o monmove.o monst.o mplayer.o mthrowu.o muse.o music.o newrng.o o_init.o objects.o objnam.o options.o pager.o pickup.o pline.o polyself.o potion.o pray.o priest.o prop.o quest.o questpgr.o read.o readonly.o rect.o region.o restore.o role.o rumors.o save.o shk.o shknam.o sit.o sounds.o sp_lev.o spell.o steal.o steed.o symclass.o teleport.o timeout.o topten.o track.o trap.o u_init.o uhitm.o vault.o version.o vision.o weapon.o were.o wield.o windows.o wizard.o worm.o worn.o write.o zap.o)
+GAME_O += $(addprefix libnethack/src/,allmain.o apply.o artifact.o attrib.o ball.o bones.o botl.o cmd.o dbridge.o decl.o detect.o dig.o display.o dlb.o script.o do.o do_name.o do_wear.o dog.o dogmove.o dokick.o dothrow.o drawing.o dump.o dungeon.o eat.o end.o engrave.o exper.o explode.o extralev.o files.o fountain.o hack.o history.o invent.o level.o light.o localtime.o lock.o log.o mail.o makemon.o mcastu.o memfile.o messages.o mhitm.o mhitq.o mhitu.o minion.o mklev.o mkmap.o mkmaze.o mkobj.o mkroom.o mon.o mondata.o monmove.o monst.o mplayer.o mthrowu.o muse.o music.o newrng.o o_init.o objects.o objnam.o options.o pager.o pickup.o pline.o polyself.o potion.o pray.o priest.o prop.o quest.o questpgr.o read.o readonly.o rect.o region.o restore.o role.o rumors.o save.o shk.o shknam.o sit.o sounds.o sp_lev.o spell.o steal.o steed.o symclass.o teleport.o timeout.o topten.o track.o trap.o u_init.o uhitm.o vault.o version.o vision.o weapon.o were.o wield.o windows.o wizard.o worm.o worn.o write.o zap.o)
 # libnethack_common: everything but netconnect
 GAME_O += $(addprefix libnethack_common/src/,common_options.o hacklib.o mail.o menulist.o trietable.o utf8conv.o xmalloc.o)
 GAME_O += tilesets/src/tilesequence.o

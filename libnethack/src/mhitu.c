@@ -3,6 +3,7 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "script.h"
 #include "hack.h"
 #include "artifact.h"
 #include "hungerstatus.h"
@@ -2100,6 +2101,7 @@ mdamageu(struct monst *mtmp, int n)
         if (u.mh < 1)
             rehumanize(DIED, killer_msg_mon(DIED, mtmp));
     } else {
+        script_call("hp_loss_modifier", n, &n);
         u.uhp -= n;
         if (u.uhp < 1)
             done_in_by(mtmp, NULL);

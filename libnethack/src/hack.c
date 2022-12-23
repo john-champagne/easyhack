@@ -4,7 +4,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <limits.h>
-
+#include "script.h"
 #include "hack.h"
 #include "hungerstatus.h"
 
@@ -3105,12 +3105,7 @@ const double HP_LOSS_FACTOR = 0.5;
 void
 losehp(int n, const char *killer)
 {
-    // Calculate new damage using HP_LOSS_FACTOR 
-    if (n > 0) {
-	    n = (int)(round((double)n * HP_LOSS_FACTOR));
-	    if (n == 0)
-		    n = 1;
-    }
+    script_call("hp_loss_modifier", n, &n);
 
     if (Upolyd) {
         u.mh -= n;

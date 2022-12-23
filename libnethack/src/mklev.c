@@ -3,6 +3,7 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "script.h"
 #include "hack.h"
 #include "lev.h"
 
@@ -563,7 +564,9 @@ makelevel(struct level *lev)
     int room_threshold;
 
     int smeq[MAXNROFROOMS + 1];
-
+    int num_items = 0;
+    int b = 0;
+    
     if (wiz1_level.dlevel == 0)
         init_dungeons();
 
@@ -737,12 +740,19 @@ skip0:
         }
         if (Is_rogue_level(&lev->z))
             goto skip_nonrogue;
-        if (!mrn2(10))
+       
+        script_call("room.gen_fountain", &b);
+        if (b)
             mkfount(lev, 0, croom);
-        if (!mrn2(60))
+        
+        script_call("room.gen_sink", &b);
+        if (b)
             mksink(lev, croom);
-        if (!mrn2(15))
+        
+        script_call("room.gen_altar", &b);
+        if (b)
             mkaltar(lev, croom);
+        
         x = 80 - (depth(&lev->z) * 2);
         if (x < 2)
             x = 2;
@@ -785,17 +795,10 @@ skip0:
             }
         }
 
-    skip_nonrogue:
-        if (!mrn2(3)) {
-            y = somey(croom, mrng());
-            x = somex(croom, mrng());
-            mkobj_at(0, lev, x, y, TRUE, mrng());
-            tryct = 0;
-            while (!mrn2(5)) {
-                if (++tryct > 100) {
-                    impossible("tryct overflow4");
-                    break;
-                }
+    skip_nonrogue: 
+        script_call("room.number_of_items",0,0,0,&num_items);
+        if (num_items > 0) {
+            for (int i = 0; i < num_items; i++) {
                 y = somey(croom, mrng());
                 x = somex(croom, mrng());
                 mkobj_at(0, lev, x, y, TRUE, mrng());

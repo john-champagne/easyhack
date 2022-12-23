@@ -3,6 +3,7 @@
 /* Copyright (C) 1990 by Ken Arromdee                             */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "script.h"
 #include "hack.h"
 
 /* Note: Arrays are column first, while the screen is row first */
@@ -387,6 +388,7 @@ explode(int x, int y, int type, /* the same as in zap.c */
 
         ugolemeffects((int)adtyp, damu);
         if (uhurt == 2) {
+            script_call("hp_loss_modifier", damu, &damu);
             if (Upolyd)
                 u.mh -= damu;
             else
