@@ -333,13 +333,13 @@ moverock(schar dx, schar dy)
             mtmp = m_at(level, rx, ry);
 
             /* KMH -- Sokoban doesn't let you push boulders diagonally */
-            if (In_sokoban(&u.uz) && dx && dy) {
+            /*if (In_sokoban(&u.uz) && dx && dy) {
                 if (Blind)
                     feel_location(sx, sy);
                 pline(msgc_yafm, "%s won't roll diagonally on this %s.",
                       The(xname(otmp)), surface(sx, sy));
-                return FALSE;
-            }
+                return TRUE;
+            }*/
 
             if (revive_nasty(rx, ry, "You sense movement on the other side."))
                 return FALSE;
@@ -871,7 +871,7 @@ test_move(int ux, int uy, int dx, int dy, int dz, int mode,
         if (In_sokoban(&u.uz)) {
             if (mode == DO_MOVE)
                 pline(msgc_cancelled, "You cannot pass that way.");
-            return FALSE;
+            return TRUE;
         }
         if (bigmonst(youmonst.data) && !can_ooze(&youmonst)) {
             if (mode == DO_MOVE)
