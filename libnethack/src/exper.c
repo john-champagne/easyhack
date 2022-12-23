@@ -7,15 +7,48 @@
 
 static int enermod(int);
 
+static long expUps[] = {
+0,		//1
+20,		//2
+50,		//3
+100,	//4
+200,	//5
+400,	//6
+800,	//7
+1600,	//8
+3200,	//9
+6400,	//10
+10400,	//11
+15600,	//12
+22800,	//13
+32500,	//14
+45200,	//15
+61900,	//16
+83100,	//17
+109300,	//18
+141000,	//19
+178700,	//20
+223000,	//21
+274500,	//22
+333800,	//23
+401500,	//24
+478200,	//25
+563900,	//26
+659600,	//27
+766300,	//28
+885000,	//29
+1000000	//30
+};
+
 long
-newuexp(int lev)
+newuexp(lev)
+int lev;
 {
-    /* keep this synced with the status-drawing code in the clients */
-    if (lev < 10)
-        return 10L * (1L << lev);
-    if (lev < 20)
-        return 10000L * (1L << (lev - 10));
-    return 10000000L * ((long)(lev - 19));
+	if (lev < 30) return expUps[lev];
+	else return 100000L + lev*10000L;
+	// if (lev < 10) return (10L * (1L << lev));
+	// if (lev < 20) return (10000L * (1L << (lev - 10)));
+	// return (10000000L * ((long)(lev - 19)));
 }
 
 static int
