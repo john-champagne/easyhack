@@ -920,7 +920,7 @@ goto_level(d_level * newlevel, boolean at_stairs, boolean falling,
         newlevel->dlevel = dunlevs_in_dungeon(newlevel);
     if (newdungeon && In_endgame(newlevel)) {   /* 1st Endgame Level !!! */
         if (Uhave_amulet)
-            assign_level(newlevel, &earth_level);
+            assign_level(newlevel, &astral_level);
         else
             return;
     }
