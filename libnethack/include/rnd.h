@@ -12,7 +12,7 @@
 
 # include "nethack_types.h"
 # include "global.h"
-
+#include <math.h>
 /* We have many RNGs. Things that couldn't reasonably be expected to line up
    between games are on rng_main (gameplay-affecting) or rng_display
    (non-gameplay-affecting); things can't be expected to line up if they depend
@@ -176,6 +176,14 @@ dice(int n, int x)
     return tmp; /* Alea iacta est. -- J.C. */
 }
 
+// Generates a normally distributed random variable
+// with mean of 0 and variance of 1.
+double randn_on_rng(enum rng rng);
+double randn();
+
+/* n <= dice_normal(n,x) <= infinity */
+int dice_normal(int n, int x);
+
 static inline int
 rne_on_rng(int x, enum rng rng)
 {
@@ -187,35 +195,14 @@ rne_on_rng(int x, enum rng rng)
     return tmp;
 }
 
-static inline int
-rne(int x)
+static inline int rne(int x)
 {
     return rne_on_rng(x, rng_main);
 }
 
-static inline int
-rnz_on_rng(int i, enum rng rng)
-{
-    long x = i;
-    long tmp = 1000;
+int rnz_on_rng(int i, enum rng rng);
 
-    tmp += rn2_on_rng(1000, rng);
-    tmp *= rne_on_rng(4, rng);
-    if (rn2(2)) {
-        x *= tmp;
-        x /= 1000;
-    } else {
-        x *= 1000;
-        x /= tmp;
-    }
-    return (int)x;
-}
-
-static inline int
-rnz(int i)
-{
-    return rnz_on_rng(i, rng_main);
-}
+int rnz(int i);
 
 #endif
 

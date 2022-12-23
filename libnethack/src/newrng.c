@@ -563,3 +563,63 @@ mklev_rn2(int x, struct level *lev)
 {
     return rn2_on_rng(x, rng_for_level(&lev->z));
 }
+
+int
+rnz_on_rng(int i, enum rng rng)
+{
+    double id = (double)i;
+    int n = (int)(randn_on_rng(rng)*1.05*id + 1.15*id);
+    if (n <= 0)
+        return rnz_on_rng(i,rng);
+    return n;
+}
+
+int
+rnz(int i)
+{
+    return rnz_on_rng(i, rng_main);
+}
+
+// Generates a normally distributed random variable
+// with mean of 0 and variance of 1.
+double 
+randn_on_rng(enum rng rng) {
+    const int N = 1000000000;
+    // x = Uniform random from -1.0 and +1.0
+    double x = 2.0 * ((double)(rn2_on_rng(N,rng) / ((double)N) - 0.5));
+
+    // Approximation of inverse error function.
+    // Returns inverf(x)
+    double A, B, lnx, sgn;
+    const double a = 0.147;
+    sgn = (x < 0) ? -1.0 : 1.0;
+
+    x = (1 - x)*(1 + x);
+    lnx = log(x);
+
+    A = 2/(M_PI*a) + 0.5f * lnx;
+    B = 1/(a) * lnx;
+
+    return (sgn*sqrt(-A + sqrt(A*A - B))) * sqrt(2.0);
+}
+
+double
+randn() {
+    return randn_on_rng(rng_main);
+}
+
+/* n <= dice_normal(n,x) <= infinity */
+int
+dice_normal(int n, int x)
+{
+    // for n = 1, a normal distribution is not a good approximation.
+    if (n == 1)
+        return dice(n,x);
+    double mu = (double)n * (double)(x + 1) * 0.5;
+    double std = sqrt((double)n * (double)(x*x - 1) / 12.0);
+    int r = (int)round(randn() * std + mu);
+    
+    if (r >= n)
+        return r;
+    return dice_normal(n,x);
+}
