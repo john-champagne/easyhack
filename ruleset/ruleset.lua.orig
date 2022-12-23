@@ -1,0 +1,148 @@
+
+
+function math.round(x)
+    return math.floor(x + 0.5)
+end
+
+----------------------
+-- Random Functions --
+----------------------
+
+math.randomseed(os.time())
+rng = {}
+
+-- rng.randuniform
+-- Returns a uniformly distributed random variable on
+-- the interval [min,max).
+-- ARGS:
+--     min - The minimum value
+--     max - The maximum value
+function rng.randuniform(min,max)
+    s = math.random() -- TODO: Change to nethack rng call
+    return (s * (max - min)) + min
+end
+
+-- rng.randn
+-- Returns a normally distributed random number.
+-- The function uses the Box-Muller transform to compute.
+-- ARGS:
+--      mean - The mean of the distribution
+--      dev  - The standard deviation of the distribution
+function rng.randn(mean, dev)
+    U1 = rng.randuniform(0,1)
+    U2 = rng.randuniform(0,1)
+    return mean + dev * math.sqrt(-2.0 * math.log(U1)) * math.cos(2.0 * math.pi * U2)
+end
+
+-- rng.randexp
+-- Returns an exponentially distributed random variable
+-- ARGS:
+--      l - The rate parameter (lambda)
+function rng.randexp(l)
+    u = rng.randuniform(0,1)
+    return -1.0 * math.log(u) / l
+end
+
+-- rng.rne
+-- Returns an unbounded geometric distribution
+-- The intention is to emulate the rne function in nethack,
+-- except that the rne in nethack is bounded to less than 10.
+-- ARGS:
+--      x - The x parameter of the nethack RNE function
+function rng.rne(x)
+    return 1 + math.floor(rng.randexp(math.log(x)))
+end
+
+
+-- rng.chance
+-- Returns true with a probability 'p'
+-- ARGS:
+--     p - The probability of returning true
+--         (range is 0 to 0.999...)
+function rng.chance(p)
+    q = rng.randuniform(0,1)
+    if p >= q then
+        return true
+    else
+        return false
+    end
+end
+
+-- rng.onein
+-- Returns true 'one in N' times.
+-- ARGS:
+--     n - The N value
+-- EXAMPLE:
+--     rng.onein(4) returns true one in 4 times (25.00%)
+function rng.onein(n)
+    return rng.chance(1.0 / n)
+end
+
+-- rng.round
+-- Rounds n such that the average of several calls
+-- will be n.
+-- e.g. 2.3 will round to:
+--      2  (70% of the time)
+--      3  (30% of the time)
+--      Average = 2.3
+-- ARGS:
+--      n - The value to round
+function rng.round(n)
+    return math.floor(n + rng.randuniform(0,1))
+end
+
+-- hp_loss_modifier
+-- ARGS:
+--      n
+--          The amount of damage.
+--          This number is positive.
+--  RETURNS:
+--      The amount of damage done.
+hp_loss_factor = 0.5
+function hp_loss_modifier(n) 
+    n = math.round(n * hp_loss_factor)
+    if n < 1 then n = 1 end
+    return n
+end
+
+
+room = {}
+
+
+-- room.gen_altar
+-- Probability that an altar will generate in a room.
+-- Default: 1 in 60
+function room.gen_altar()
+    return rng.onein(15)
+end
+
+function room.gen_fountain()
+    return rng.onein(10)
+end
+
+function room.gen_sink()
+    return rng.onein(10)
+end
+
+-- room.number_of_items
+-- The number of items in a room.
+-- ARGS:
+--      size_x - The horizontal size of the room
+--      size_y - The vertical size of the room
+--      z      - The dungeon level (higher number => deeper)
+-- RETURNS:
+--      The number of items in that will be in the room.
+--
+-- Default: if rng.onein(3) then return rng.rne(5) else return 0 end
+--          default value has a mean of 0.42 items per room
+function room.number_of_items(size_x, size_y, z)
+    if rng.onein(3) then return rng.rne(5) else return 0 end
+end
+
+
+
+
+
+
+
+
