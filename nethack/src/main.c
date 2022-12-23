@@ -337,7 +337,7 @@ int
 main(int argc, char *argv[])
 {
     srand(time(NULL));
-
+    
     char **gamepaths;
     int i;
     nh_bool init_ok;
@@ -358,7 +358,7 @@ main(int argc, char *argv[])
         free(gamepaths[i]);
     free(gamepaths);
 
-
+    
     process_args(argc, argv);   /* other command line options */
     init_displaychars();
 

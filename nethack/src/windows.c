@@ -154,7 +154,7 @@ load_tile_file(const char *tilebase, char *store_tilename_in)
 
     if (!tileprefix)
         return;        /* UI not initialized yet */
-
+    
     char namebuf1[strlen(tileprefix) + strlen(tilebase) + sizeof ".nh4ct"];
     strcpy(namebuf1, tileprefix);
     strcat(namebuf1, tilebase);
@@ -172,7 +172,7 @@ load_tile_file(const char *tilebase, char *store_tilename_in)
 
     if (!ui_flags.connection_only)
         get_gamedirA(TILESET_DIR, user_tilespath);
-
+    
     char namebuf2[strlen(user_tilespath) + strlen(tilebase) + sizeof ".nh4ct"];
     strcpy(namebuf2, user_tilespath);
     strcat(namebuf2, tilebase);
