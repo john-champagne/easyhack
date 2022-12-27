@@ -1400,7 +1400,7 @@ thitmonst(struct monst *mon, struct obj *obj)
         return 0;
 
     } else if (obj->oclass == POTION_CLASS) {
-        if ((guaranteed_hit || ACURR(A_DEX) > rnd(25))) {
+        if ((guaranteed_hit || ACURR(A_DEX) >= rnd(20))) {
             potionhit(mon, obj, &youmonst);
             return 1;
         }
