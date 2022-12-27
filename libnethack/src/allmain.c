@@ -924,7 +924,15 @@ you_moved(void)
                      ((MAXULEV + 8 -
                        u.ulevel) * (Role_if(PM_WIZARD) ? 3 : 4) / 6))))
                  || Energy_regeneration)) {
-                u.uen += rn1((int)(ACURR(A_WIS) + ACURR(A_INT)) / 15 + 1, 1);
+                /* Percent of max energy */
+                float pct = (float)(u.uen) / (float)(u.uenmax);
+                int bonus = 0;
+                /* If you're less than 33% */
+                if (pct < 0.3333f) {
+                    /* Regain 10% of energy */
+                    bonus = (int)((float)(u.uenmax) * 0.1f + 0.5f);
+                }
+                u.uen += rn1((int)(ACURR(A_WIS) + ACURR(A_INT)) / 15 + 1, 1) + bonus;
                 if (u.uen > u.uenmax)
                     u.uen = u.uenmax;
             }
