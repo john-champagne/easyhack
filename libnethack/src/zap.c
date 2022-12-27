@@ -1844,10 +1844,6 @@ zapnodir(struct obj *obj)
         break;
     case WAN_WISHING:
         known = TRUE;
-        if (Luck + rn2(5) < 0) {
-            pline(msgc_itemloss, "Unfortunately, nothing happens.");
-            break;
-        }
         makewish();
         break;
     case WAN_ENLIGHTENMENT:
@@ -4294,7 +4290,7 @@ retry:
     if (!otmp) {
         pline(msgc_cancelled,
               "Nothing fitting that description exists in the game.");
-        if (++tries < 5)
+        if (++tries < 50)
             goto retry;
         pline(msgc_itemloss, "That's enough tries!");
         otmp = readobjnam(NULL, NULL, TRUE);
