@@ -576,9 +576,7 @@ doengrave_core(const struct nh_cmd_arg *arg, int auto_elbereth)
     if (IS_ALTAR(level->locations[u.ux][u.uy].typ)) {
         /* TODO: This takes zero time but has game effects (sort-of the reverse
            of msgc_cancelled1). */
-        pline(msgc_badidea, "You make a motion towards the altar with your %s.",
-              writer);
-        altar_wrath(u.ux, u.uy);
+        pline(msgc_badidea, "You can't desecrate an altar!");
         return 0;
     }
     if (IS_GRAVE(level->locations[u.ux][u.uy].typ)) {
@@ -652,6 +650,7 @@ doengrave_core(const struct nh_cmd_arg *arg, int auto_elbereth)
     case WAND_CLASS:
         if (zappable(otmp)) {
             check_unpaid(otmp);
+            otmp->spe++;
             zapwand = TRUE;
             if (Levitation)
                 ptext = FALSE;
@@ -668,6 +667,8 @@ doengrave_core(const struct nh_cmd_arg *arg, int auto_elbereth)
             case WAN_WISHING:
             case WAN_ENLIGHTENMENT:
                 zapnodir(otmp);
+                otmp->spe--;
+                doknown_after = TRUE;
                 break;
 
                 /* IMMEDIATE wands */
@@ -707,6 +708,7 @@ doengrave_core(const struct nh_cmd_arg *arg, int auto_elbereth)
             case WAN_OPENING:
             case WAN_LOCKING:
             case WAN_PROBING:
+                doknown_after = TRUE;
                 break;
 
                 /* RAY wands */
@@ -722,11 +724,19 @@ doengrave_core(const struct nh_cmd_arg *arg, int auto_elbereth)
 
                 /* can't tell sleep from death - Eric Backus */
             case WAN_SLEEP:
+                if (!Blind) {
+                    post_engr_text = msgprintf(
+                        "The bugs on the %s fall asleep!", surface(u.ux, u.uy));
+                }
+                doknown_after = TRUE;
+                break;
+
             case WAN_DEATH:
                 if (!Blind) {
                     post_engr_text = msgprintf(
-                        "The bugs on the %s stop moving!", surface(u.ux, u.uy));
+                        "The bugs on the %s die!", surface(u.ux, u.uy));
                 }
+                doknown_after = TRUE;
                 break;
 
             case WAN_COLD:
@@ -744,6 +754,7 @@ doengrave_core(const struct nh_cmd_arg *arg, int auto_elbereth)
                               surface(u.ux, u.uy));
                     dengr = TRUE;
                 }
+                doknown_after = TRUE;
                 break;
             case WAN_TELEPORTATION:
                 if (oep && oep->engr_type != HEADSTONE) {
@@ -752,6 +763,7 @@ doengrave_core(const struct nh_cmd_arg *arg, int auto_elbereth)
                               surface(u.ux, u.uy));
                     teleengr = TRUE;
                 }
+                doknown_after = TRUE;
                 break;
 
                 /* type = ENGRAVE wands */
