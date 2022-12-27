@@ -1374,7 +1374,7 @@ mkaltar(struct level *lev, struct mkroom *croom)
     lev->locations[m.x][m.y].typ = ALTAR;
 
     /* -1 - A_CHAOTIC, 0 - A_NEUTRAL, 1 - A_LAWFUL */
-    if (!mrn2(3)) 
+    if (!mrn2(4)) 
         al = mrn2((int)A_LAWFUL + 2) - 1;
     else
 	al = u.ualign.type;
