@@ -1287,8 +1287,6 @@ dosearch0(int aflag)
                     if (Blind && !aflag)
                         feel_location(x, y);
                     if (level->locations[x][y].typ == SDOOR) {
-                        if (rnl(7 - fund))
-                            continue;
                         /* changes .type to DOOR */
                         cvt_sdoor_to_door(&level->locations[x][y], &u.uz);
                         exercise(A_WIS, TRUE);
@@ -1298,8 +1296,6 @@ dosearch0(int aflag)
                         else
                             newsym(x, y);
                     } else if (level->locations[x][y].typ == SCORR) {
-                        if (rnl(7 - fund))
-                            continue;
                         level->locations[x][y].typ = CORR;
                         unblock_point(x, y);    /* vision */
                         exercise(A_WIS, TRUE);
@@ -1334,8 +1330,7 @@ dosearch0(int aflag)
                                 already = 1;
                         }
 
-                        if ((trap = t_at(level, x, y)) && !trap->tseen &&
-                            !rnl(8)) {
+                        if ((trap = t_at(level, x, y)) && !trap->tseen) {
                             action_interrupted();
 
                             if (trap->ttyp == STATUE_TRAP) {
