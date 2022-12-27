@@ -9,7 +9,7 @@
 #define SPELLMENU_CAST (-2)
 #define SPELLMENU_VIEW (-1)
 
-#define KEEN 20000
+#define KEEN 1000000
 #define MAX_SPELL_STUDY 3
 #define incrnknow(spell)        spl_book[spell].sp_know = KEEN
 
@@ -104,9 +104,9 @@ static const char *spelltypemnemonic(int);
  *      to permit magic-use).
  */
 
-#define uarmhbon 4      /* Metal helmets interfere with the mind */
-#define uarmgbon 6      /* Casting channels through the hands */
-#define uarmfbon 2      /* All metal interferes to some degree */
+#define uarmhbon 0      /* Metal helmets interfere with the mind */
+#define uarmgbon 0      /* Casting channels through the hands */
+#define uarmfbon 0      /* All metal interferes to some degree */
 
 /* since the spellbook itself doesn't blow up, don't say just "explodes" */
 static const char explodes[] = "radiates explosive energy";
@@ -615,7 +615,7 @@ age_spells(void)
     for (i = 0; i < MAXSPELL; i++) {
         if (!SPELL_IS_FROM_SPELLBOOK(i))
             continue;
-        if (spellknow(i))
+        if (spellknow(i) && 0)
             decrnknow(i);
     }
     return;
@@ -1380,14 +1380,12 @@ percent_success(int spell)
     special = urole.spelheal;
     statused = ACURR(urole.spelstat);
 
-    if (uarm && is_metallic(uarm))
-        splcaster += (uarmc &&
-                      uarmc->otyp ==
-                      ROBE) ? urole.spelarmr / 2 : urole.spelarmr;
+    if (uarm && is_metallic(uarm) && 0)
+        splcaster += 0;
     else if (uarmc && uarmc->otyp == ROBE)
         splcaster -= urole.spelarmr;
     if (uarms)
-        splcaster += urole.spelshld;
+        splcaster += 0;
 
     if (uarmh && is_metallic(uarmh) && uarmh->otyp != HELM_OF_BRILLIANCE)
         splcaster += uarmhbon;
@@ -1445,17 +1443,6 @@ percent_success(int spell)
         chance = 0;
     if (chance > 120)
         chance = 120;
-
-    /* Wearing anything but a light shield makes it very awkward to cast a
-       spell.  The penalty is not quite so bad for the player's role-specific
-       spell. */
-    if (uarms && weight(uarms) > (int)objects[SMALL_SHIELD].oc_weight) {
-        if (spellid(spell) == urole.spelspec) {
-            chance /= 2;
-        } else {
-            chance /= 4;
-        }
-    }
 
     /* Finally, chance (based on player intell/wisdom and level) is combined
        with ability (based on player intrinsics and encumbrances).  No matter
